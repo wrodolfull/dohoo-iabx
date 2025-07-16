@@ -1,0 +1,107 @@
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+export const api = {
+  // Tenants
+  getTenants: () => fetch(`${API_URL}/tenants`).then(r => r.json()),
+  createTenant: (body: any) => fetch(`${API_URL}/tenants`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateTenant: (id: string, body: any) => fetch(`${API_URL}/tenants/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteTenant: (id: string) => fetch(`${API_URL}/tenants/${id}`, { method: 'DELETE' }),
+
+  // Extensions
+  getExtensions: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/extensions`).then(r => r.json()),
+  createExtension: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/extensions`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateExtension: (id: string, body: any) => fetch(`${API_URL}/extensions/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteExtension: (id: string) => fetch(`${API_URL}/extensions/${id}`, { method: 'DELETE' }),
+
+  // Plans (Global - não vinculados a tenant)
+  getPlans: () => fetch(`${API_URL}/plans`).then(r => r.json()),
+  createPlan: (body: any) => fetch(`${API_URL}/plans`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updatePlan: (id: string, body: any) => fetch(`${API_URL}/plans/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deletePlan: (id: string) => fetch(`${API_URL}/plans/${id}`, { method: 'DELETE' }),
+
+  // Users
+  getUsers: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/users`).then(r => r.json()),
+  createUser: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/users`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateUser: (id: string, body: any) => fetch(`${API_URL}/users/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteUser: (id: string) => fetch(`${API_URL}/users/${id}`, { method: 'DELETE' }),
+
+  // Ring Groups
+  getRingGroups: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/ringgroups`).then(r => r.json()),
+  createRingGroup: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/ringgroups`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateRingGroup: (id: string, body: any) => fetch(`${API_URL}/ringgroups/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteRingGroup: (id: string) => fetch(`${API_URL}/ringgroups/${id}`, { method: 'DELETE' }),
+
+  // Trunks
+  getTrunks: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/trunks`).then(r => r.json()),
+  createTrunk: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/trunks`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateTrunk: (id: string, body: any) => fetch(`${API_URL}/trunks/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteTrunk: (id: string) => fetch(`${API_URL}/trunks/${id}`, { method: 'DELETE' }),
+
+  // Inbound Routes
+  getInboundRoutes: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/inbound`).then(r => r.json()),
+  createInboundRoute: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/inbound`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateInboundRoute: (id: string, body: any) => fetch(`${API_URL}/inbound/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteInboundRoute: (id: string) => fetch(`${API_URL}/inbound/${id}`, { method: 'DELETE' }),
+
+  // Outbound Routes
+  getOutboundRoutes: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/outbound`).then(r => r.json()),
+  createOutboundRoute: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/outbound`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateOutboundRoute: (id: string, body: any) => fetch(`${API_URL}/outbound/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteOutboundRoute: (id: string) => fetch(`${API_URL}/outbound/${id}`, { method: 'DELETE' }),
+
+  // URA
+  getURA: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/ura`).then(r => r.json()),
+  createURA: (tenantId: string, body: any) => fetch(`${API_URL}/tenants/${tenantId}/ura`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateURA: (id: string, body: any) => fetch(`${API_URL}/ura/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteURA: (id: string) => fetch(`${API_URL}/ura/${id}`, { method: 'DELETE' }),
+
+  // Audit Logs
+  getAuditLogs: (filters: any) => {
+    const params = new URLSearchParams();
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== undefined && filters[key] !== null) {
+        params.append(key, filters[key]);
+      }
+    });
+    return fetch(`${API_URL}/audit-logs?${params}`).then(r => r.json());
+  },
+  exportAuditLogs: (filters: any) => {
+    const params = new URLSearchParams();
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== undefined && filters[key] !== null) {
+        params.append(key, filters[key]);
+      }
+    });
+    return fetch(`${API_URL}/audit-logs/export?${params}`).then(r => r.text());
+  },
+
+  // Schedules (Horários de Atendimento)
+  getSchedules: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/schedules`).then(r => r.json()),
+  createSchedule: (body: any) => fetch(`${API_URL}/tenants/${body.tenant_id}/schedules`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  updateSchedule: (id: string, body: any) => fetch(`${API_URL}/schedules/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json()),
+  deleteSchedule: (id: string) => fetch(`${API_URL}/schedules/${id}`, { method: 'DELETE' }),
+
+  // Active Calls
+  getActiveCalls: (tenantId: string) => fetch(`${API_URL}/tenants/${tenantId}/active-calls`).then(r => r.json()),
+  hangupCall: (callId: string) => fetch(`${API_URL}/calls/${callId}/hangup`, { method: 'POST' }).then(r => r.json()),
+
+  // Reports
+  getCallReports: (tenantId: string, filters: any) => {
+    const params = new URLSearchParams();
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== undefined && filters[key] !== null) {
+        params.append(key, filters[key]);
+      }
+    });
+    return fetch(`${API_URL}/tenants/${tenantId}/reports/calls?${params}`).then(r => r.json());
+  },
+  exportCallReports: (tenantId: string, filters: any) => {
+    const params = new URLSearchParams();
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== undefined && filters[key] !== null) {
+        params.append(key, filters[key]);
+      }
+    });
+    return fetch(`${API_URL}/tenants/${tenantId}/reports/calls/export?${params}`).then(r => r.text());
+  }
+}; 

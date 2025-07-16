@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<configuration name="modules.conf" description="Modules">
+  <modules>
+    <!-- Loggers (choose one) -->
+    <load module="mod_console"/>
+    <load module="mod_logfile"/>
+    <load module="mod_syslog"/>
+    
+    <!-- Multi-Faceted -->
+    <load module="mod_enum"/>
+    <load module="mod_xml_cdr"/>
+    <load module="mod_cdr_csv"/>
+    <load module="mod_event_socket"/>
+    <load module="mod_sofia"/>
+    <load module="mod_loopback"/>
+    
+    <!-- XML Interfaces -->
+    <load module="mod_xml_rpc"/>
+    <load module="mod_xml_scgi"/>
+    
+    <!-- Languages -->
+    <load module="mod_lua"/>
+    
+    <!-- Applications -->
+    <load module="mod_commands"/>
+    <load module="mod_conference"/>
+    <load module="mod_dptools"/>
+    <load module="mod_expr"/>
+    <load module="mod_fifo"/>
+    <load module="mod_hash"/>
+    <load module="mod_voicemail"/>
+    <load module="mod_esf"/>
+    <load module="mod_fsv"/>
+    <load module="mod_cluechoo"/>
+    <load module="mod_valet_parking"/>
+    <load module="mod_httapi"/>
+    <load module="mod_sms"/>
+    <load module="mod_test"/>
+    
+    <!-- CALL CENTER MODULE -->
+    <load module="mod_callcenter"/>
+    
+    <!-- Dialplan Interfaces -->
+    <load module="mod_dialplan_xml"/>
+    <load module="mod_dialplan_asterisk"/>
+    
+    <!-- Codec Interfaces -->
+    <load module="mod_g723_1"/>
+    <load module="mod_g729"/>
+    <load module="mod_amr"/>
+    <load module="mod_opus"/>
+    
+    <!-- File Format Interfaces -->
+    <load module="mod_sndfile"/>
+    <load module="mod_native_file"/>
+    <load module="mod_png"/>
+    
+    <!-- Timers -->
+    <!-- <load module="mod_timerfd"/> -->
+    
+    <!-- Languages -->
+    <load module="mod_say_en"/>
+    
+    <!-- ASR /TTS -->
+    <!-- <load module="mod_flite"/> -->
+    <!-- <load module="mod_pocketsphinx"/> -->
+    <!-- <load module="mod_cepstral"/> -->
+    <!-- <load module="mod_tts_commandline"/> -->
+    <!-- <load module="mod_rss"/> -->
+    
+    <!-- Say -->
+    <load module="mod_say_en"/>
+    
+    <!-- Third party modules -->
+    <!--<load module="mod_nibblebill"/>-->
+    <!--<load module="mod_curl"/>-->
+    <!--<load module="mod_xml_curl"/>-->
+    <!--<load module="mod_ldap"/>-->
+    
+    <!-- Endpoints -->
+    <load module="mod_sofia"/>
+    <load module="mod_loopback"/>
+    <load module="mod_skinny"/>
+    <load module="mod_rtc"/>
+    
+    <!-- WEBRTC ENDPOINT -->
+    <load module="mod_verto"/>
+    
+    <!-- Applications -->
+    <load module="mod_commands"/>
+    <load module="mod_conference"/>
+    <load module="mod_db"/>
+    <load module="mod_dptools"/>
+    <load module="mod_expr"/>
+    <load module="mod_fifo"/>
+    <load module="mod_hash"/>
+    <load module="mod_voicemail"/>
+    <load module="mod_esf"/>
+    <load module="mod_fsv"/>
+    <load module="mod_valet_parking"/>
+    <load module="mod_httapi"/>
+    <load module="mod_sms"/>
+    <load module="mod_local_stream"/>
+    <load module="mod_tone_stream"/>
+    <load module="mod_native_file"/>
+    <load module="mod_sndfile"/>
+    <load module="mod_png"/>
+    
+    <!-- Formats -->
+    <load module="mod_sndfile"/>
+    <load module="mod_native_file"/>
+    <load module="mod_local_stream"/>
+    <load module="mod_tone_stream"/>
+    
+  </modules>
+</configuration>

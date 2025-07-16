@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<include>
+  <!-- CALL CENTER DIALPLAN -->
+  
+  <!-- Fila de Suporte Técnico - 4000 -->
+  <extension name="suporte_callcenter">
+    <condition field="destination_number" expression="^4000$">
+      <action application="answer"/>
+      <action application="set" data="hangup_after_bridge=true"/>
+      <action application="set" data="continue_on_fail=true"/>
+      <action application="set" data="call_timeout=300"/>
+      <action application="set" data="effective_caller_id_name=Suporte"/>
+      <action application="set" data="effective_caller_id_number=${caller_id_number}"/>
+      <!-- Recording para monitoramento -->
+      <action application="record_session" data="$${recordings_dir}/${domain_name}/callcenter/${strftime(%Y-%m-%d)}/suporte_${uuid}.wav"/>
+      <!-- Música de espera -->
+      <action application="set" data="hold_music=$${hold_music}"/>
+      <!-- Playback de mensagem de boas-vindas -->
+      <action application="playback" data="ivr/ivr-welcome.wav"/>
+      <action application="playback" data="ivr/ivr-you_are_calling_support.wav"/>
+      <action application="playback" data="ivr/ivr-please_hold.wav"/>
+      <!-- Entrar na fila do call center -->
+      <action application="callcenter" data="suporte@default"/>
+      <!-- Se não atendido, transferir para voicemail -->
+      <action application="answer"/>
+      <action application="playback" data="ivr/ivr-no_agents_available.wav"/>
+      <action application="voicemail" data="default ${domain_name} 4000"/>
+    </condition>
+  </extension>
+
+  <!-- Fila de Vendas - 4001 -->
+  <extension name="vendas_callcenter">
+    <condition field="destination_number" expression="^4001$">
+      <action application="answer"/>
+      <action application="set" data="hangup_after_bridge=true"/>
+      <action application="set" data="continue_on_fail=true"/>
+      <action application="set" data="call_timeout=200"/>
+      <action application="set" data="effective_caller_id_name=Vendas"/>
+      <action application="set" data="effective_caller_id_number=${caller_id_number}"/>
+      <!-- Recording para monitoramento -->
+      <action application="record_session" data="$${recordings_dir}/${domain_name}/callcenter/${strftime(%Y-%m-%d)}/vendas_${uuid}.wav"/>
+      <!-- Música de espera -->
+      <action application="set" data="hold_music=$${hold_music}"/>
+      <!-- Playback de mensagem de boas-vindas -->
+      <action application="playback" data="ivr/ivr-welcome.wav"/>
+      <action application="playback" data="ivr/ivr-you_are_calling_sales.wav"/>
+      <action application="playback" data="ivr/ivr-please_hold.wav"/>
+      <!-- Entrar na fila do call center -->
+      <action application="callcenter" data="vendas@default"/>
+      <!-- Se não atendido, transferir para voicemail -->
+      <action application="answer"/>
+      <action application="playback" data="ivr/ivr-no_agents_available.wav"/>
+      <action application="voicemail" data="default ${domain_name} 4001"/>
+    </condition>
+  </extension>
+
+  <!-- Fila VIP - 4002 -->
+  <extension name="vip_callcenter">
+    <condition field="destination_number" expression="^4002$">
+      <action application="answer"/>
+      <action application="set" data="hangup_after_bridge=true"/>
+      <action application="set" data="continue_on_fail=true"/>
+      <action application="set" data="call_timeout=120"/>
+      <action application="set" data="effective_caller_id_name=VIP"/>
+      <action application="set" data="effective_caller_id_number=${caller_id_number}"/>
+      <!-- Recording obrigatório para VIP -->
+      <action application="record_session" data="$${recordings_dir}/${domain_name}/callcenter/${strftime(%Y-%m-%d)}/vip_${uuid}.wav"/>
+      <!-- Música de espera VIP -->
+      <action application="set" data="hold_music=$${hold_music}"/>
+      <!-- Playback de mensagem VIP -->
+      <action application="playback" data="ivr/ivr-welcome_vip.wav"/>
+      <action application="playback" data="ivr/ivr-priority_service.wav"/>
+      <!-- Entrar na fila VIP -->
+      <action application="callcenter" data="vip@default"/>
+      <!-- Se não atendido, transferir para supervisor -->
+      <action application="answer"/>
+      <action application="playback" data="ivr/ivr-transferring_supervisor.wav"/>
+      <action application="transfer" data="1008 XML default"/>
+    </condition>
+  </extension>
+
+  <!-- Fila Geral - 4003 -->
+  <extension name="geral_callcenter">
+    <condition field="destination_number" expression="^4003$">
+      <action application="answer"/>
+      <action application="set" data="hangup_after_bridge=true"/>
+      <action application="set" data="continue_on_fail=true"/>
+      <action application="set" data="call_timeout=400"/>
+      <action application="set" data="effective_caller_id_name=Geral"/>
+      <action application="set" data="effective_caller_id_number=${caller_id_number}"/>
+      <!-- Recording -->
+      <action application="record_session" data="$${recordings_dir}/${domain_name}/callcenter/${strftime(%Y-%m-%d)}/geral_${uuid}.wav"/>
+      <!-- Música de espera -->
+      <action application="set" data="hold_music=$${hold_music}"/>
+      <!-- Menu de opções -->
+      <action application="playback" data="ivr/ivr-welcome.wav"/>
+      <action application="playback" data="ivr/ivr-please_select_option.wav"/>
+      <action application="playback" data="ivr/ivr-press_1_support.wav"/>
+      <action application="playback" data="ivr/ivr-press_2_sales.wav"/>
+      <action application="playback" data="ivr/ivr-press_3_general.wav"/>
+      <action application="read" data="1 1 3000 ivr/ivr-please_enter_menu_option.wav menu_option (\d+)"/>
+      <action application="transfer" data="${menu_option} XML callcenter_menu"/>
+      <!-- Default: fila geral -->
+      <action application="callcenter" data="geral@default"/>
+      <!-- Fallback -->
+      <action application="answer"/>
+      <action application="playback" data="ivr/ivr-no_agents_available.wav"/>
+      <action application="voicemail" data="default ${domain_name} 4003"/>
+    </condition>
+  </extension>
+
+  <!-- Menu de opções do call center -->
+  <extension name="callcenter_menu_1">
+    <condition field="destination_number" expression="^1$">
+      <condition field="context" expression="^callcenter_menu$">
+        <action application="transfer" data="4000 XML default"/>
+      </condition>
+    </condition>
+  </extension>
+
+  <extension name="callcenter_menu_2">
+    <condition field="destination_number" expression="^2$">
+      <condition field="context" expression="^callcenter_menu$">
+        <action application="transfer" data="4001 XML default"/>
+      </condition>
+    </condition>
+  </extension>
+
+  <extension name="callcenter_menu_3">
+    <condition field="destination_number" expression="^3$">
+      <condition field="context" expression="^callcenter_menu$">
+        <action application="transfer" data="4003 XML default"/>
+      </condition>
+    </condition>
+  </extension>
+
+  <!-- Números diretos dos agentes -->
+  <extension name="agente_1001">
+    <condition field="destination_number" expression="^1001$">
+      <action application="export" data="dialed_extension=1001"/>
+      <action application="bind_meta_app" data="1 b s execute_extension::dx XML features"/>
+      <action application="bind_meta_app" data="2 b s record_session::$${recordings_dir}/${domain_name}/archive/${strftime(%Y-%m-%d-%H-%M-%S)}_${dialed_extension}.wav"/>
+      <action application="bind_meta_app" data="3 b s execute_extension::cf XML features"/>
+      <action application="set" data="ringback=${us-ring}"/>
+      <action application="set" data="transfer_ringback=$${hold_music}"/>
+      <action application="set" data="call_timeout=30"/>
+      <action application="set" data="hangup_after_bridge=true"/>
+      <action application="set" data="continue_on_fail=true"/>
+      <action application="hash" data="insert/${domain_name}-call_return/${dialed_extension}/${caller_id_number}"/>
+      <action application="hash" data="insert/${domain_name}-last_dial_ext/${dialed_extension}/${uuid}"/>
+      <action application="set" data="called_party_callgroup=${user_data(${dialed_extension}@${domain_name} var callgroup)}"/>
+      <action application="hash" data="insert/${domain_name}-last_dial/${called_party_callgroup}/${uuid}"/>
+      <action application="bridge" data="user/${dialed_extension}@${domain_name}"/>
+      <action application="answer"/>
+      <action application="sleep" data="1000"/>
+      <action application="bridge" data="loopback/app=voicemail:default ${domain_name} ${dialed_extension}"/>
+    </condition>
+  </extension>
+
+  <!-- Pesquisa de Satisfação -->
+  <extension name="satisfaction_survey">
+    <condition field="destination_number" expression="^9999$">
+      <action application="answer"/>
+      <action application="sleep" data="1000"/>
+      <action application="playback" data="ivr/ivr-thank_you_call.wav"/>
+      <action application="playback" data="ivr/ivr-rate_service.wav"/>
+      <action application="playback" data="ivr/ivr-press_1_excellent.wav"/>
+      <action application="playback" data="ivr/ivr-press_2_good.wav"/>
+      <action application="playback" data="ivr/ivr-press_3_average.wav"/>
+      <action application="playback" data="ivr/ivr-press_4_poor.wav"/>
+      <action application="playback" data="ivr/ivr-press_5_terrible.wav"/>
+      <action application="read" data="1 1 5000 ivr/ivr-please_enter_rating.wav satisfaction_rating (\d+)"/>
+      <action application="lua" data="satisfaction_survey.lua ${satisfaction_rating} ${caller_id_number} ${uuid}"/>
+      <action application="playback" data="ivr/ivr-thank_you_feedback.wav"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+  <!-- Status dos agentes -->
+  <extension name="agent_login">
+    <condition field="destination_number" expression="^(\*\*1\d{3})$">
+      <action application="answer"/>
+      <action application="callcenter_config" data="agent set status ${caller_id_number}@${domain_name} Available"/>
+      <action application="playback" data="ivr/ivr-you_are_now_logged_in.wav"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+  <extension name="agent_logout">
+    <condition field="destination_number" expression="^(\*\*2\d{3})$">
+      <action application="answer"/>
+      <action application="callcenter_config" data="agent set status ${caller_id_number}@${domain_name} Logged Out"/>
+      <action application="playback" data="ivr/ivr-you_are_now_logged_out.wav"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+  <extension name="agent_break">
+    <condition field="destination_number" expression="^(\*\*3\d{3})$">
+      <action application="answer"/>
+      <action application="callcenter_config" data="agent set status ${caller_id_number}@${domain_name} On Break"/>
+      <action application="playbook" data="ivr/ivr-you_are_on_break.wav"/>
+      <action application="hangup"/>
+    </condition>
+  </extension>
+
+</include> 

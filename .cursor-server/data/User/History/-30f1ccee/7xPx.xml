@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration name="callcenter.conf" description="CallCenter">
+  <settings>
+    <!-- Configurações globais do call center -->
+    <param name="odbc-dsn" value=""/>
+    <param name="dbname" value="callcenter"/>
+    <param name="debug" value="1"/>
+    <param name="cc-instance-id" value="single_box"/>
+    <param name="cc-name" value="Sistema Call Center Avançado"/>
+    <param name="abandon-sec" value="60"/>
+    <param name="max-wait-time" value="300"/>
+    <param name="max-wait-time-with-no-agent" value="120"/>
+    <param name="max-wait-time-with-no-agent-time-reached" value="30"/>
+    <param name="tier-rules-apply" value="false"/>
+    <param name="tier-rule-wait-second" value="300"/>
+    <param name="tier-rule-wait-multiply-level" value="true"/>
+    <param name="tier-rule-no-agent-no-wait" value="false"/>
+    <!-- Mute na entrada -->
+    <param name="moh-sound" value="$${hold_music}"/>
+    <!-- Configurações de notificação -->
+    <param name="ring-progressively-delay" value="10"/>
+  </settings>
+
+  <!-- FILAS DO CALL CENTER -->
+  <queues>
+    <!-- Fila de Suporte Técnico -->
+    <queue name="suporte@default">
+      <param name="strategy" value="longest-idle-agent"/>
+      <param name="moh-sound" value="$${hold_music}"/>
+      <param name="time-base-score" value="system"/>
+      <param name="tier-rules-apply" value="false"/>
+      <param name="tier-rule-wait-second" value="300"/>
+      <param name="tier-rule-wait-multiply-level" value="true"/>
+      <param name="tier-rule-no-agent-no-wait" value="false"/>
+      <param name="discard-abandoned-after" value="60"/>
+      <param name="abandoned-resume-allowed" value="false"/>
+      <param name="max-wait-time" value="300"/>
+      <param name="max-wait-time-with-no-agent" value="180"/>
+      <param name="max-wait-time-with-no-agent-time-reached" value="30"/>
+      <param name="record-template" value="$${recordings_dir}/$${domain_name}/archive/${strftime(%Y)}/${strftime(%b)}/${strftime(%d)}/CC_${queue_name}_${uuid}.wav"/>
+      <param name="ring-progressively-delay" value="10"/>
+      <param name="skip-over-agents-with-external-calls" value="true"/>
+      <param name="agent-status-filter" value="Available,On Break"/>
+    </queue>
+
+    <!-- Fila de Vendas -->
+    <queue name="vendas@default">
+      <param name="strategy" value="round-robin"/>
+      <param name="moh-sound" value="$${hold_music}"/>
+      <param name="time-base-score" value="system"/>
+      <param name="tier-rules-apply" value="false"/>
+      <param name="tier-rule-wait-second" value="180"/>
+      <param name="tier-rule-wait-multiply-level" value="true"/>
+      <param name="tier-rule-no-agent-no-wait" value="false"/>
+      <param name="discard-abandoned-after" value="45"/>
+      <param name="abandoned-resume-allowed" value="false"/>
+      <param name="max-wait-time" value="200"/>
+      <param name="max-wait-time-with-no-agent" value="120"/>
+      <param name="max-wait-time-with-no-agent-time-reached" value="20"/>
+      <param name="record-template" value="$${recordings_dir}/$${domain_name}/archive/${strftime(%Y)}/${strftime(%b)}/${strftime(%d)}/CC_${queue_name}_${uuid}.wav"/>
+      <param name="ring-progressively-delay" value="5"/>
+      <param name="skip-over-agents-with-external-calls" value="true"/>
+      <param name="agent-status-filter" value="Available"/>
+    </queue>
+
+    <!-- Fila VIP -->
+    <queue name="vip@default">
+      <param name="strategy" value="agent-with-least-talk-time"/>
+      <param name="moh-sound" value="$${hold_music}"/>
+      <param name="time-base-score" value="system"/>
+      <param name="tier-rules-apply" value="false"/>
+      <param name="tier-rule-wait-second" value="120"/>
+      <param name="tier-rule-wait-multiply-level" value="true"/>
+      <param name="tier-rule-no-agent-no-wait" value="false"/>
+      <param name="discard-abandoned-after" value="30"/>
+      <param name="abandoned-resume-allowed" value="true"/>
+      <param name="max-wait-time" value="120"/>
+      <param name="max-wait-time-with-no-agent" value="60"/>
+      <param name="max-wait-time-with-no-agent-time-reached" value="15"/>
+      <param name="record-template" value="$${recordings_dir}/$${domain_name}/archive/${strftime(%Y)}/${strftime(%b)}/${strftime(%d)}/CC_${queue_name}_${uuid}.wav"/>
+      <param name="ring-progressively-delay" value="3"/>
+      <param name="skip-over-agents-with-external-calls" value="true"/>
+      <param name="agent-status-filter" value="Available"/>
+    </queue>
+
+    <!-- Fila de Atendimento Geral -->
+    <queue name="geral@default">
+      <param name="strategy" value="fewest-calls"/>
+      <param name="moh-sound" value="$${hold_music}"/>
+      <param name="time-base-score" value="system"/>
+      <param name="tier-rules-apply" value="false"/>
+      <param name="tier-rule-wait-second" value="240"/>
+      <param name="tier-rule-wait-multiply-level" value="true"/>
+      <param name="tier-rule-no-agent-no-wait" value="false"/>
+      <param name="discard-abandoned-after" value="90"/>
+      <param name="abandoned-resume-allowed" value="false"/>
+      <param name="max-wait-time" value="400"/>
+      <param name="max-wait-time-with-no-agent" value="200"/>
+      <param name="max-wait-time-with-no-agent-time-reached" value="45"/>
+      <param name="record-template" value="$${recordings_dir}/$${domain_name}/archive/${strftime(%Y)}/${strftime(%b)}/${strftime(%d)}/CC_${queue_name}_${uuid}.wav"/>
+      <param name="ring-progressively-delay" value="15"/>
+      <param name="skip-over-agents-with-external-calls" value="true"/>
+      <param name="agent-status-filter" value="Available,On Break"/>
+    </queue>
+  </queues>
+
+  <!-- AGENTES DO CALL CENTER -->
+  <agents>
+    <!-- Agentes de Suporte -->
+    <agent name="1001@default" type="callback" contact="[leg_timeout=15]user/1001@default" status="Available" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+    <agent name="1002@default" type="callback" contact="[leg_timeout=15]user/1002@default" status="Available" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+    <agent name="1003@default" type="callback" contact="[leg_timeout=15]user/1003@default" status="Available" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+    
+    <!-- Agentes de Vendas -->
+    <agent name="1004@default" type="callback" contact="[leg_timeout=15]user/1004@default" status="Available" max-no-answer="3" wrap-up-time="15" reject-delay-time="15" busy-delay-time="90" />
+    <agent name="1005@default" type="callback" contact="[leg_timeout=15]user/1005@default" status="Available" max-no-answer="3" wrap-up-time="15" reject-delay-time="15" busy-delay-time="90" />
+    
+    <!-- Agentes VIP -->
+    <agent name="1006@default" type="callback" contact="[leg_timeout=10]user/1006@default" status="Available" max-no-answer="2" wrap-up-time="5" reject-delay-time="5" busy-delay-time="30" />
+    <agent name="1007@default" type="callback" contact="[leg_timeout=10]user/1007@default" status="Available" max-no-answer="2" wrap-up-time="5" reject-delay-time="5" busy-delay-time="30" />
+    
+    <!-- Supervisores -->
+    <agent name="1008@default" type="callback" contact="[leg_timeout=20]user/1008@default" status="Available" max-no-answer="5" wrap-up-time="20" reject-delay-time="20" busy-delay-time="120" />
+    <agent name="1009@default" type="callback" contact="[leg_timeout=20]user/1009@default" status="Available" max-no-answer="5" wrap-up-time="20" reject-delay-time="20" busy-delay-time="120" />
+  </agents>
+
+  <!-- ASSOCIAÇÃO AGENTE-FILA (TIERS) -->
+  <tiers>
+    <!-- Agentes de Suporte - Tier 1 -->
+    <tier agent="1001@default" queue="suporte@default" level="1" position="1"/>
+    <tier agent="1002@default" queue="suporte@default" level="1" position="2"/>
+    <tier agent="1003@default" queue="suporte@default" level="1" position="3"/>
+    
+    <!-- Agentes de Suporte também atendem Geral - Tier 2 -->
+    <tier agent="1001@default" queue="geral@default" level="2" position="1"/>
+    <tier agent="1002@default" queue="geral@default" level="2" position="2"/>
+    <tier agent="1003@default" queue="geral@default" level="2" position="3"/>
+    
+    <!-- Agentes de Vendas - Tier 1 -->
+    <tier agent="1004@default" queue="vendas@default" level="1" position="1"/>
+    <tier agent="1005@default" queue="vendas@default" level="1" position="2"/>
+    
+    <!-- Agentes VIP - Tier 1 -->
+    <tier agent="1006@default" queue="vip@default" level="1" position="1"/>
+    <tier agent="1007@default" queue="vip@default" level="1" position="2"/>
+    
+    <!-- Supervisores atendem todas as filas - Tier 3 -->
+    <tier agent="1008@default" queue="suporte@default" level="3" position="1"/>
+    <tier agent="1008@default" queue="vendas@default" level="3" position="1"/>
+    <tier agent="1008@default" queue="vip@default" level="2" position="1"/>
+    <tier agent="1008@default" queue="geral@default" level="3" position="1"/>
+    
+    <tier agent="1009@default" queue="suporte@default" level="3" position="2"/>
+    <tier agent="1009@default" queue="vendas@default" level="3" position="2"/>
+    <tier agent="1009@default" queue="vip@default" level="2" position="2"/>
+    <tier agent="1009@default" queue="geral@default" level="3" position="2"/>
+  </tiers>
+</configuration> 
