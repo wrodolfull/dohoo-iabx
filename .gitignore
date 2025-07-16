@@ -1,5 +1,8 @@
 # 🎯 Dohoo IABX - .gitignore
 
+# Ignorar arquivos e pastas do Cursor e arquivos grandes
+.cursor-server/
+
 # Dependencies
 node_modules/
 npm-debug.log*
